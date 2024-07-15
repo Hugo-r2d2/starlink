@@ -1,8 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./StarlinkList.css";
 
 function StarlinkList() {
+  const [starlinks, setStarlinks] = useState([]);
+
   useEffect(() => {
     const fetchStarlinks = async () => {
       const response = await axios.post(
@@ -13,6 +15,7 @@ function StarlinkList() {
         }
       );
       console.log(response);
+      setStarlinks(response.data.docs);
     };
     fetchStarlinks();
   }, []);
@@ -21,6 +24,11 @@ function StarlinkList() {
   return (
     <>
       <h1>Satélites Starlink</h1>
+      <ul>
+        {starlinks.map((sat) => (
+          <li key={sat.id}> {sat.spaceTrack.OBJECT_NAME}</li>
+        ))}
+      </ul>
     </>
   );
 }
